@@ -9,7 +9,6 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "test": "jest",
     "serve:coverage": "npm run test && cd coverage/lcov-report && npx serve"
-    
   },
   "repository": {
     "type": "git",
@@ -29,10 +28,13 @@
   },
   "homepage": "https://gitlab.com/learning-projects20/node-project#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "helmet": "^6.0.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.0",
