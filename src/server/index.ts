@@ -19,6 +19,9 @@ server.use(
     router
     );
 
+// Static server
+server.use(express.static('public'));
+
 // TODO: Mongoose
 
 // TODO: * Security config
