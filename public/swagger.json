@@ -1,0 +1,29 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "node-project",
+		"version": "1.0.0",
+		"description": "Backend Node, Express, TypeScript, Swagger",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {
+			"name": "@silvina-varela"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}
