@@ -1,9 +1,13 @@
+import { Get, Query, Route, Tags } from "tsoa";
 import { BasicResponse } from "./types";
 import { IByeController } from "./interfaces";
 import { LogSuccess } from "../utils/logger";
 
+@Route("/api/goodbye")
+@Tags("GoodbyeController")
 export class GoodbyeController implements IByeController {
-    public async getMessage(name?: string): Promise<BasicResponse> {
+    @Get("/")
+    public async getMessage(@Query()name?: string): Promise<BasicResponse> {
         LogSuccess('[/api/goodbye] Get Request');
 
         let date_ob = new Date();

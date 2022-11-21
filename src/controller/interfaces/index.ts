@@ -8,3 +8,17 @@ export interface IHelloController {
 export interface IByeController {
     getMessage(name?: string): Promise<BasicResponse>
 }
+
+export interface IUserController {
+    // Get all users or get user by ID
+    getUsers(id?: string): Promise<any>
+
+    // Delete user by ID
+    deleteUser(id?: string): Promise<any>
+
+    // Create
+    createUser(user: any): Promise<any>
+
+    // Update 
+    updateUser(id: string, user: any): Promise<any>
+}
