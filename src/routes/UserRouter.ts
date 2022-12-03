@@ -21,7 +21,7 @@ usersRouter.route('/')
         const response: any = await controller.getUsers(id);
 
         // Send the client the response
-        return res.send(response);
+        return res.status(200).send(response);
     })
 
     .delete(async (req: Request, res: Response) => {
@@ -36,14 +36,15 @@ usersRouter.route('/')
         const response: any = await controller.deleteUser(id);
 
         // Send the client the response
-        return res.send(response);
+        return res.status(response.status).send(response.message);
     })
 
     .post(async(req: Request, res: Response) => {
-        let name: any = req?.query?.name;
-        let email: any = req?.query?.email;
-        let age: any = req?.query?.age;
+        let name: any = req?.body?.name;
+        let email: any = req?.body?.email;
+        let age: any = req?.body?.age;
 
+        LogInfo(`NAME in BODY: ${name}`)
          // Controller instance to execute method
          const controller: UserController = new UserController();
         
@@ -56,7 +57,7 @@ usersRouter.route('/')
          const response: any = await controller.createUser(user);
  
          // Send the client the response
-         return res.send(response);
+         return res.status(201).send(response);
     })
 
     .put(async(req: Request, res: Response) => {
@@ -78,8 +79,16 @@ usersRouter.route('/')
          const response: any = await controller.updateUser(id, user);
  
          // Send the client the response
-         return res.send(response);
+         return res.status(response.status).send(response.message);
     })
 
 //Export
 export default usersRouter;
+
+
+/**
+ * get 200 OK
+ * create 201 OK
+ * delete 200(entity)/204(no return)
+ * update 200(entitiy)/204(no return)
+ */
