@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { IUser } from '../domain/interfaces/IUser.interface'
 import { IAuth } from "../domain/interfaces/IAuth.interface";
 
-//Middleware
+// JWT verifier Middleware
 import { verifyToken } from "../middlewares/verifyToken.middleware";
 
 // Body parser --> middleware to read body request

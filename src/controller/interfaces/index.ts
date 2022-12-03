@@ -12,7 +12,7 @@ export interface IByeController {
 
 export interface IUserController {
     // Get all users or get user by ID
-    getUsers(id?: string): Promise<any>
+    getUsers(page: number, limit: number, id?: string): Promise<any>
 
     // Delete user by ID
     deleteUser(id?: string): Promise<any>

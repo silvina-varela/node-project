@@ -5,6 +5,7 @@ import { IAuth } from "../interfaces/IAuth.interface";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { UsersResponse } from "../types/UsersResponse.type";
 
 
 // Config env variables
@@ -16,12 +17,29 @@ const secret = process.env.SECRETKEY || 'MYSECRETKEY';
 /**
  * Get all users from Collection "Users" in Mongo Server
  */
-export const getAllUsers = async (): Promise<any[] | undefined> => {
+export const getAllUsers = async (page: number, limit: number): Promise<any[] | undefined> => {
     try{
         let userModel = userEntity();
 
-        // Search users
-        return await userModel.find({isDelete: false});
+        let response: any = {};
+
+        // Search all users using pagination
+        await userModel.find({isDeleted: false})
+            .select('name email age')
+            .limit(limit)
+            .skip((page - 1) * limit)
+            .exec()
+            .then((users: IUser[]) => {
+                response.users = users;
+            });
+
+        // Count total documents in collection 'Users'
+        await userModel.countDocuments().then((total: number) => {
+            response.totalPages = Math.ceil(total / limit);
+            response.currentPage = page;
+        });
+
+        return response;
     } catch(error){
         LogError(`[ORM ERROR]: Get All Users: ${error}`);
     }
@@ -35,7 +53,7 @@ export const getUserByID = async (id: string): Promise<any | undefined> => {
     try{
         let userModel = userEntity();
         
-        return await userModel.findById(id);
+        return await userModel.findById(id).select('name email age');
 
     } catch (error){
         LogError(`[ORM ERROR]: Getting user by ID: ${error}`);
