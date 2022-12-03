@@ -5,6 +5,7 @@ import { LogSuccess, LogError, LogWarning } from '../utils/logger';
 // ORM
 import { deleteUserByID, getAllUsers, getUserByID, createUser, updateUserByID } from '../domain/orm/User.orm';
 
+
 @Route("/api/users")
 @Tags("UserController")
 export class UserController implements IUserController {
@@ -22,11 +23,14 @@ export class UserController implements IUserController {
             LogSuccess('[/api/users] Get User By ID');
 
             response = await getUserByID(id);
+            response.password = ''
 
         } else {
             LogSuccess('[/api/users] Get All Users Requested')
 
             response = await getAllUsers();
+
+            // TODO: remove passwords from response
         }    
         return response;
     }
@@ -61,21 +65,6 @@ export class UserController implements IUserController {
         }    
         return response;
     }
-
-    @Post('/')
-    public async createUser(user: any): Promise<any>{
-        let response: any = '';
-
-        await createUser(user).then((r) => {
-            LogSuccess('[/api/users] Create User');
-
-            response = {
-                message: `User created: ${user.name}`
-            }
-        })
-            
-
-        }
 
         @Put('/')
         public async updateUser(id: string, user: any): Promise<any>{

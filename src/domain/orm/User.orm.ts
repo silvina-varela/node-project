@@ -3,7 +3,13 @@ import { LogError, LogSuccess } from "../../utils/logger";
 import { IUser } from "../interfaces/IUser.interface";
 import { IAuth } from "../interfaces/IAuth.interface";
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+
+// Config env variables
+dotenv.config();
+const secret = process.env.SECRETKEY || 'MYSECRETKEY';
 
 // CRUD
 
@@ -28,7 +34,7 @@ export const getUserByID = async (id: string): Promise<any | undefined> => {
    
     try{
         let userModel = userEntity();
-
+        
         return await userModel.findById(id);
 
     } catch (error){
@@ -97,36 +103,42 @@ export const registerUser = async (user: IUser): Promise<any | undefined> => {
 export const loginUser = async (auth: IAuth): Promise<any | undefined> => {
     try {
         let userModel = userEntity();
-        // Find user by email
-        userModel.findOne({email: auth.email}, (err: any, user: IUser) => {
-            if(err){
-                // TODO: return error while searching (500)
-            } 
-            if(!user){
-                //TODO: return error user not found (404)
-            }
-
-            // Use bcrypt to compare passwords
-            let validPassword = bcrypt.compareSync(auth.password, user.password);
-
-            if(!validPassword){
-                //TODO: error 401 (not authorised)
-            } 
-
-            // Create JWT
         
+        let userFound: IUser | undefined = undefined;
+        let token = undefined;
+    
+        // Check if user exists
+        await userModel.findOne({email: auth.email}).then((user: IUser) => {
+            userFound = user;
+        }).catch((error) => {
+            console.error(`[ERROR Auth] User not found`)
+            throw new Error(`[ERROR Auth: ${error}] User not found`)
+        });
+     
+        // Use bcrypt to compare passwords
+        let validPassword = bcrypt.compareSync(auth.password, userFound!.password);
 
-        // TODO: create jwt
-        // TODO: Add secret in .env
-        let token = jwt.sign({email: user.email}, 'SECRET', {
+        if(!validPassword){
+            console.error(`[ERROR Auth] Password not valid`)
+            throw new Error(`[ERROR Auth] Password not valid`)        
+        } 
+
+        // Generate JWT
+        token = jwt.sign({email: userFound!.email}, secret, {
             expiresIn: '2h'
         });
 
-        return token;
+        return {
+            user: userFound,
+            token
+        };
+     
 
-    })
-     } catch (error) {
+        
+
     
+     } catch (error) {
+        LogError(`[ORM ERROR] ${error}`)
      }
 }
 

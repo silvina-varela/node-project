@@ -2,10 +2,8 @@ import { LogInfo } from "../utils/logger";
 import express, { Request, Response } from "express";
 import { UserController } from "../controller/UsersController";
 
-
 // Router from express
 let usersRouter = express.Router();
-
 
 usersRouter.route('/')
     // GET http://localhost:8000/api/users?id=
@@ -38,28 +36,6 @@ usersRouter.route('/')
         // Send the client the response
         return res.status(response.status).send(response.message);
     })
-
-    .post(async(req: Request, res: Response) => {
-        let name: any = req?.body?.name;
-        let email: any = req?.body?.email;
-        let age: any = req?.body?.age;
-
-        LogInfo(`NAME in BODY: ${name}`)
-         // Controller instance to execute method
-         const controller: UserController = new UserController();
-        
-         let user = {
-            name: name || 'default',
-            email: email || 'default',
-            age: age || 18
-         }
-         // Obtain response 
-         const response: any = await controller.createUser(user);
- 
-         // Send the client the response
-         return res.status(201).send(response);
-    })
-
     .put(async(req: Request, res: Response) => {
         let name: any = req?.query?.name;
         let email: any = req?.query?.email;

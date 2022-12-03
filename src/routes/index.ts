@@ -27,7 +27,7 @@ server.use('/', rootRouter); // http://localhost:8000/api/
 server.use('/hello', helloRouter); // http://localhost:8000/api/hello/
 server.use('/goodbye', goodbyeRouter); // http://localhost:8000/api/goodbye/
 server.use('/users', usersRouter); // http://localhost:8000/api/users/
-server.use('/auth', authRouter);
+server.use('/auth', authRouter); // http://localhost:8000/api/auth/
 
 
 export default server;

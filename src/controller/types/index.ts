@@ -15,3 +15,11 @@ export type ErrorResponse = {
     error: string,
     message: string
 }
+
+/**
+ * Auth json response
+ */
+ export type AuthResponse = {
+     message: string,
+     token: string
+}
