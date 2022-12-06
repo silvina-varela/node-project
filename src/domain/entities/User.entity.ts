@@ -19,6 +19,10 @@ export const userEntity = () => {
             age: {
                 type: Number,
                 required: true
+            },
+            katas: {
+                type: [],
+                required: true
             }
         }
     )
